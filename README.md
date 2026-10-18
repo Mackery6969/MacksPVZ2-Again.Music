@@ -29,6 +29,11 @@ pick from, and it costs nothing in a built bank.
 
 `.gitattributes` puts `.mp3`, `.wav`, `.ogg` and `.bank` through Git LFS.
 
+The empty `.gdignore` keeps Godot out. Without it the engine treats this as a
+folder of game assets and imports all four thousand clips, which costs several
+hundred megabytes of import cache and buys nothing - the game loads built
+banks, never these files.
+
 ## How the game uses it
 
 The game never names a bank path or a file. It raises a named event, and the
