@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.03.00">
+	<object class="AudioFile" id="{a35e304f-9003-4bef-bd1d-182185dcd982}">
+		<property name="assetPath">
+			<value>PVZGE/SFX/Other/ro/ro1.mp3</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>48</value>
+		</property>
+		<property name="channelCount">
+			<value>2</value>
+		</property>
+		<property name="length">
+			<value>3.552</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{ca112f1c-cde4-46ba-8288-1028a63e97dd}</destination>
+		</relationship>
+	</object>
+</objects>

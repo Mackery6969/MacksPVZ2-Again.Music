@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.03.00">
+	<object class="AudioFile" id="{a8e73b70-a548-4aa3-9a89-f77e819a2d2c}">
+		<property name="assetPath">
+			<value>PVZGE/SFX/Plants/Explode/expl2__4.mp3</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>32</value>
+		</property>
+		<property name="channelCount">
+			<value>1</value>
+		</property>
+		<property name="length">
+			<value>2.988</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{ca112f1c-cde4-46ba-8288-1028a63e97dd}</destination>
+		</relationship>
+	</object>
+</objects>

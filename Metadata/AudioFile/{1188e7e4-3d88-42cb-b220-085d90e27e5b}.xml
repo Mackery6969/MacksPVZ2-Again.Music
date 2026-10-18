@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.03.00">
+	<object class="AudioFile" id="{1188e7e4-3d88-42cb-b220-085d90e27e5b}">
+		<property name="assetPath">
+			<value>PVZGE/SFX/Other/melon/melon1_spawn4.mp3</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>32</value>
+		</property>
+		<property name="channelCount">
+			<value>1</value>
+		</property>
+		<property name="length">
+			<value>1.224</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{ca112f1c-cde4-46ba-8288-1028a63e97dd}</destination>
+		</relationship>
+	</object>
+</objects>

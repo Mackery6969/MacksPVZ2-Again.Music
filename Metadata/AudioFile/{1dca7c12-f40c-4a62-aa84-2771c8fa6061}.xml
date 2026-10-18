@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.03.00">
+	<object class="AudioFile" id="{1dca7c12-f40c-4a62-aa84-2771c8fa6061}">
+		<property name="assetPath">
+			<value>PVZGE/SFX/Zombies/Voice/say1__7.mp3</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>16</value>
+		</property>
+		<property name="channelCount">
+			<value>1</value>
+		</property>
+		<property name="length">
+			<value>1.4039999999999999</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{ca112f1c-cde4-46ba-8288-1028a63e97dd}</destination>
+		</relationship>
+	</object>
+</objects>
