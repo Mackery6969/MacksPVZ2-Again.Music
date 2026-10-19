@@ -31,6 +31,9 @@
 		<relationship name="parameters">
 			<destination>{4a969d60-6182-48a3-ae78-89ecf04c1a1c}</destination>
 		</relationship>
+		<relationship name="banks">
+			<destination>{5f992f17-8922-4a6b-8d2d-ab37d0a65202}</destination>
+		</relationship>
 	</object>
 	<object class="EventMixer" id="{9c3d805e-d04a-4b5e-8c8f-d9d9c29943ab}">
 		<relationship name="masterBus">
