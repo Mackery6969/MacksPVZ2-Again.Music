@@ -1,5 +1,9 @@
 .cache
 .user
+# Studio's crash-recovery buffer. It holds absolute Windows paths from
+# whichever machine last had the project open, so it is not shareable - and a
+# clone that carries it opens claiming unsaved changes.
+.unsaved
 
 build/**
 Build/**
