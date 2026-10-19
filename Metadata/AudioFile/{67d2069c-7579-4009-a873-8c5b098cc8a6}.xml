@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.03.00">
+	<object class="AudioFile" id="{67d2069c-7579-4009-a873-8c5b098cc8a6}">
+		<property name="assetPath">
+			<value>SFX/Zombies/Limb.mp3</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>44</value>
+		</property>
+		<property name="channelCount">
+			<value>2</value>
+		</property>
+		<property name="length">
+			<value>0.581</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{ca112f1c-cde4-46ba-8288-1028a63e97dd}</destination>
+		</relationship>
+	</object>
+</objects>
