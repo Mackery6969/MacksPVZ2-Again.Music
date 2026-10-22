@@ -2,13 +2,13 @@
 
 importer="mp3"
 type="AudioStreamMP3"
-uid="uid://dnk77uy4agfk4"
-path="res://.godot/imported/steady0.mp3-556eea5b8942e98b3ec56d1679964e8c.mp3str"
+uid="uid://bbpe546af784e"
+path="res://.godot/imported/Steady0.mp3-db1c9e29d5921c7d3b6920bfe466896f.mp3str"
 
 [deps]
 
-source_file="res://Music/Assets/PVZGE/SFX/Other/steady/steady0.mp3"
-dest_files=["res://.godot/imported/steady0.mp3-556eea5b8942e98b3ec56d1679964e8c.mp3str"]
+source_file="res://Music/Assets/PVZGE/SFX/Other/Steady/Steady0.mp3"
+dest_files=["res://.godot/imported/Steady0.mp3-db1c9e29d5921c7d3b6920bfe466896f.mp3str"]
 
 [params]
 

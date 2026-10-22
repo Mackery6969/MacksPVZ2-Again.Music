@@ -2,13 +2,13 @@
 
 importer="mp3"
 type="AudioStreamMP3"
-uid="uid://lpr1ny5txr3g"
-path="res://.godot/imported/step3.mp3-571783075058b795fc498b3c750a4193.mp3str"
+uid="uid://c7fwd4pgssxv8"
+path="res://.godot/imported/Step3.mp3-ec932849e024eab6fb281de343728847.mp3str"
 
 [deps]
 
-source_file="res://Music/Assets/PVZGE/SFX/Zombies/Move/step3.mp3"
-dest_files=["res://.godot/imported/step3.mp3-571783075058b795fc498b3c750a4193.mp3str"]
+source_file="res://Music/Assets/PVZGE/SFX/Zombies/Move/Step3.mp3"
+dest_files=["res://.godot/imported/Step3.mp3-ec932849e024eab6fb281de343728847.mp3str"]
 
 [params]
 

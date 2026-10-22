@@ -2,13 +2,13 @@
 
 importer="mp3"
 type="AudioStreamMP3"
-uid="uid://ds7d5jlnrlpuw"
-path="res://.godot/imported/deathFall0.mp3-58ddf4d10aa7fd1cdf06d109a4631b3e.mp3str"
+uid="uid://kpp6in88d6pa"
+path="res://.godot/imported/DeathFall0.mp3-0783f6d3227779e7f57b0948594b4443.mp3str"
 
 [deps]
 
-source_file="res://Music/Assets/PVZGE/SFX/Zombies/Death/deathFall0.mp3"
-dest_files=["res://.godot/imported/deathFall0.mp3-58ddf4d10aa7fd1cdf06d109a4631b3e.mp3str"]
+source_file="res://Music/Assets/PVZGE/SFX/Zombies/Death/DeathFall0.mp3"
+dest_files=["res://.godot/imported/DeathFall0.mp3-0783f6d3227779e7f57b0948594b4443.mp3str"]
 
 [params]
 

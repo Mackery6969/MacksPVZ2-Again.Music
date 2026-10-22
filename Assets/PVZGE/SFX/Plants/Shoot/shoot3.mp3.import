@@ -2,13 +2,13 @@
 
 importer="mp3"
 type="AudioStreamMP3"
-uid="uid://bjcu1akbo7vb"
-path="res://.godot/imported/shoot3.mp3-9f9a0f7b6a2411743338048d91944a8c.mp3str"
+uid="uid://dboc1b581psch"
+path="res://.godot/imported/Shoot3.mp3-f6f2c3b9e613811a195c8170418b64dd.mp3str"
 
 [deps]
 
-source_file="res://Music/Assets/PVZGE/SFX/Plants/Shoot/shoot3.mp3"
-dest_files=["res://.godot/imported/shoot3.mp3-9f9a0f7b6a2411743338048d91944a8c.mp3str"]
+source_file="res://Music/Assets/PVZGE/SFX/Plants/Shoot/Shoot3.mp3"
+dest_files=["res://.godot/imported/Shoot3.mp3-f6f2c3b9e613811a195c8170418b64dd.mp3str"]
 
 [params]
 

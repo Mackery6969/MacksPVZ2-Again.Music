@@ -2,13 +2,13 @@
 
 importer="mp3"
 type="AudioStreamMP3"
-uid="uid://61xaidawvrns"
-path="res://.godot/imported/shout0.mp3-e14d90f84878e29c1929feccd146ac8f.mp3str"
+uid="uid://dooxc0s2fjtvw"
+path="res://.godot/imported/Shout0.mp3-4a428f4872bde711884359da6c9db037.mp3str"
 
 [deps]
 
-source_file="res://Music/Assets/PVZGE/SFX/Other/_misc/S/shout0.mp3"
-dest_files=["res://.godot/imported/shout0.mp3-e14d90f84878e29c1929feccd146ac8f.mp3str"]
+source_file="res://Music/Assets/PVZGE/SFX/Other/_misc/S/Shout0.mp3"
+dest_files=["res://.godot/imported/Shout0.mp3-4a428f4872bde711884359da6c9db037.mp3str"]
 
 [params]
 
