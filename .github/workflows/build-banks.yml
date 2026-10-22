@@ -3,7 +3,8 @@ name: Build FMOD banks
 # Builds the Studio project with fmodstudiocl on a self-hosted Windows runner
 # that has FMOD Studio installed. GitHub's hosted runners have no Studio, and
 # downloading it needs an fmod.com login, so the runner lives on a dev PC.
-# Setup: docs/BUILD_RUNNER.md.
+# The banks go up as an artifact, then the game repo's "Update FMOD banks"
+# workflow is started to commit them there. Setup: docs/BUILD_RUNNER.md.
 #
 # Never add a pull_request trigger here: this job runs on a personal machine,
 # and the repository is public.
@@ -33,9 +34,8 @@ jobs:
       run:
         shell: powershell
     env:
-      # Repository variables (Settings > Secrets and variables > Actions).
+      # Repository variable (Settings > Secrets and variables > Actions).
       FMOD_STUDIO_CL: ${{ vars.FMOD_STUDIO_CL }}
-      BANK_INSTALL_DIR: ${{ vars.BANK_INSTALL_DIR }}
       PLATFORM: Desktop
     steps:
       # The workspace persists between runs on a self-hosted runner, so LFS
@@ -63,17 +63,6 @@ jobs:
           }
           Get-ChildItem "$out\*.bank" | Format-Table Name, @{n='MB'; e={[math]::Round($_.Length / 1MB, 1)}}
 
-      - name: Copy banks into the game checkout
-        if: env.BANK_INSTALL_DIR != ''
-        run: |
-          $dest = $env:BANK_INSTALL_DIR
-          if (-not (Test-Path -LiteralPath $dest)) { throw "BANK_INSTALL_DIR '$dest' does not exist" }
-          # Clear stale banks first, so a bank removed from the project does
-          # not linger and keep loading. Fails if the game has them open.
-          Remove-Item "$dest\*.bank"
-          Copy-Item "Build\$env:PLATFORM\*.bank" $dest
-          "Copied banks for $env:GITHUB_SHA to $dest"
-
       - uses: actions/upload-artifact@v4
         with:
           name: fmod-banks-${{ env.PLATFORM }}
@@ -82,3 +71,21 @@ jobs:
           retention-days: 14
           # Bank audio is already compressed; zipping it again gains nothing.
           compression-level: 0
+
+      # Only master's banks belong in the game; a manual run on another
+      # branch stops at the artifact.
+      - name: Send the banks to the game repo
+        if: github.ref == 'refs/heads/master'
+        env:
+          TOKEN: ${{ secrets.BANKS_TOKEN }}
+        run: |
+          if (-not $env:TOKEN) { throw "The BANKS_TOKEN secret is not set - see docs/BUILD_RUNNER.md." }
+          $body = @{
+            ref = 'master'
+            inputs = @{ run_id = "$env:GITHUB_RUN_ID"; music_sha = "$env:GITHUB_SHA" }
+          } | ConvertTo-Json
+          Invoke-RestMethod -Method Post `
+            -Uri 'https://api.github.com/repos/Mackery6969/MacksPVZ2-Again/actions/workflows/update-banks.yml/dispatches' `
+            -Headers @{ Authorization = "Bearer $env:TOKEN"; Accept = 'application/vnd.github+json'; 'X-GitHub-Api-Version' = '2022-11-28' } `
+            -Body $body -ContentType 'application/json'
+          "Started the game repo's Update FMOD banks workflow for $env:GITHUB_SHA"

@@ -13,13 +13,16 @@ that already has Studio installed. Each build:
 2. runs `fmodstudiocl -build -platforms Desktop -ignore-warnings PVZGE.fspro`
    (about 20 seconds);
 3. fails if `Master.bank` or `Master.strings.bank` is missing;
-4. if `BANK_INSTALL_DIR` is set, replaces the `.bank` files there with the new
-   ones - point it at the game checkout's `audio/banks`;
-5. uploads the banks as the `fmod-banks-Desktop` artifact, kept for 14 days,
-   for any other machine.
+4. uploads the banks as the `fmod-banks-Desktop` artifact, kept for 14 days;
+5. on `master` only, starts the game repo's **Update FMOD banks** workflow,
+   which downloads that artifact, commits the banks to the game repo's
+   `audio/banks/` (through Git LFS) together with a `Music` submodule bump to
+   the commit they were built from, and pushes straight to its `master`.
 
-Banks are never committed: the Music bank alone is over 100 MB, and committing
-it on every build would use up GitHub's free LFS quota within a few builds.
+The build is deterministic - the same project gives byte-identical banks - so
+a change that does not affect a bank does not commit a new copy of it, and LFS
+storage only grows when a bank really changes. The Music bank is over 100 MB,
+so every change to the music does cost that much of the LFS quota.
 
 ## One-time setup
 
@@ -43,24 +46,38 @@ On the PC with FMOD Studio:
 Git and Git LFS must be on that account's `PATH` (`git lfs version` should
 work in a fresh PowerShell window).
 
-### 2. Set the repository variables
+### 2. Make a token for the two workflows
 
-**Settings > Secrets and variables > Actions > Variables > New repository
-variable**:
+The Music workflow has to start a workflow in the game repo, and the game
+repo's workflow has to download this repo's artifact. A workflow's own token
+cannot reach another repository, so they share a personal token:
 
-| Name | Example | |
-|---|---|---|
-| `FMOD_STUDIO_CL` | `D:\Programs\FMOD Studio 2.03.14\fmodstudiocl.exe` | required |
-| `BANK_INSTALL_DIR` | `D:\Programs\GitHub\MacksPVZ2-Again\audio\banks` | optional |
+1. GitHub > **Settings > Developer settings > Personal access tokens >
+   Fine-grained tokens > Generate new token**.
+2. **Repository access: Only select repositories**, and pick both
+   `MacksPVZ2-Again` and `MacksPVZ2-Again.Music`.
+3. **Permissions > Repository permissions > Actions: Read and write.** Nothing
+   else is needed. Pick an expiry you will remember to renew.
+4. Add it as a repository **secret** named `BANKS_TOKEN` in **both**
+   repositories (**Settings > Secrets and variables > Actions > Secrets > New
+   repository secret**).
+
+### 3. Set the repository variable
+
+In this repo, **Settings > Secrets and variables > Actions > Variables > New
+repository variable**: `FMOD_STUDIO_CL` =
+`D:\Programs\FMOD Studio 2.03.14\fmodstudiocl.exe` (wherever yours is).
 
 Use a **2.03** Studio. The project is saved in the 2.03 format, and the FMOD
 Engine the game loads has to be the same minor version as the Studio that
 built the banks.
 
-### 3. Try it
+### 4. Try it
 
-**Actions > Build FMOD banks > Run workflow**. A green run shows the bank
-sizes in the **Build banks** step.
+**Actions > Build FMOD banks > Run workflow** on `master`. A green run shows
+the bank sizes in the **Build banks** step, and a moment later the game repo's
+**Update FMOD banks** run commits them (or reports they were already up to
+date). Pull the game repo to get them.
 
 ## Troubleshooting
 
@@ -68,8 +85,11 @@ sizes in the **Build banks** step.
   (Settings > Actions > Runners shows both).
 - **"FMOD_STUDIO_CL is not set":** the repository variable is missing or
   points at the wrong path.
-- **Copy step fails with "being used by another process":** the game or the
-  Godot editor has the banks loaded. Close it and re-run the job.
+- **"BANKS_TOKEN secret is not set", or a 401/403/404 from either workflow:**
+  the token is missing from one of the repos, lacks Actions read and write on
+  both, or has expired.
+- **Pull fails on `audio/banks`:** an older setup copied banks in by hand.
+  Delete the `.bank` files there and pull again.
 - **Clips missing from the build:** check that `git lfs version` works for the
   runner's account; without LFS the checkout holds pointer files, not audio.
 
