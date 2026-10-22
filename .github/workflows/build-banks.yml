@@ -1,0 +1,84 @@
+name: Build FMOD banks
+
+# Builds the Studio project with fmodstudiocl on a self-hosted Windows runner
+# that has FMOD Studio installed. GitHub's hosted runners have no Studio, and
+# downloading it needs an fmod.com login, so the runner lives on a dev PC.
+# Setup: docs/BUILD_RUNNER.md.
+#
+# Never add a pull_request trigger here: this job runs on a personal machine,
+# and the repository is public.
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - PVZGE.fspro
+      - Metadata/**
+      - Assets/**
+      - .github/workflows/build-banks.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: fmod-banks
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: [self-hosted, windows, fmod]
+    timeout-minutes: 30
+    defaults:
+      run:
+        shell: powershell
+    env:
+      # Repository variables (Settings > Secrets and variables > Actions).
+      FMOD_STUDIO_CL: ${{ vars.FMOD_STUDIO_CL }}
+      BANK_INSTALL_DIR: ${{ vars.BANK_INSTALL_DIR }}
+      PLATFORM: Desktop
+    steps:
+      # The workspace persists between runs on a self-hosted runner, so LFS
+      # only fetches clips that changed since the last build.
+      - uses: actions/checkout@v4
+        with:
+          lfs: true
+
+      - name: Build banks
+        run: |
+          $cl = $env:FMOD_STUDIO_CL
+          if (-not $cl -or -not (Test-Path -LiteralPath $cl)) {
+            throw "FMOD_STUDIO_CL is not set or not found ('$cl'). Point it at fmodstudiocl.exe - see docs/BUILD_RUNNER.md."
+          }
+          # -ignore-warnings: Studio warns about assets with conflicting
+          # compression and streaming settings, which does not stop a build.
+          & $cl -build -platforms $env:PLATFORM -ignore-warnings PVZGE.fspro
+          if ($LASTEXITCODE -ne 0) { throw "fmodstudiocl exited with $LASTEXITCODE" }
+
+          $out = "Build\$env:PLATFORM"
+          # Without the master and strings banks no event resolves, and the
+          # game fails silently - so a build missing them is a failed build.
+          foreach ($bank in 'Master.bank', 'Master.strings.bank') {
+            if (-not (Test-Path -LiteralPath "$out\$bank")) { throw "$bank was not built" }
+          }
+          Get-ChildItem "$out\*.bank" | Format-Table Name, @{n='MB'; e={[math]::Round($_.Length / 1MB, 1)}}
+
+      - name: Copy banks into the game checkout
+        if: env.BANK_INSTALL_DIR != ''
+        run: |
+          $dest = $env:BANK_INSTALL_DIR
+          if (-not (Test-Path -LiteralPath $dest)) { throw "BANK_INSTALL_DIR '$dest' does not exist" }
+          # Clear stale banks first, so a bank removed from the project does
+          # not linger and keep loading. Fails if the game has them open.
+          Remove-Item "$dest\*.bank"
+          Copy-Item "Build\$env:PLATFORM\*.bank" $dest
+          "Copied banks for $env:GITHUB_SHA to $dest"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: fmod-banks-${{ env.PLATFORM }}
+          path: Build/${{ env.PLATFORM }}/*.bank
+          if-no-files-found: error
+          retention-days: 14
+          # Bank audio is already compressed; zipping it again gains nothing.
+          compression-level: 0
